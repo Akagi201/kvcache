@@ -19,10 +19,10 @@ func TestLRUTTLAddNoTTL(t *testing.T) {
 		t.Fatalf("err: %v", err)
 	}
 
-	if l.Add(1, 1) == true || evictCounter != 0 {
+	if l.Add(1, 1) || evictCounter != 0 {
 		t.Errorf("should not have an eviction")
 	}
-	if l.Add(2, 2) == false || evictCounter != 1 {
+	if !l.Add(2, 2) || evictCounter != 1 {
 		t.Errorf("should have an eviction")
 	}
 }
@@ -42,10 +42,10 @@ func TestLRUTTLAddWithTTL(t *testing.T) {
 		t.Fatalf("err: %v", err)
 	}
 
-	if l.AddWithTTL(1, 1, time.Millisecond*5) == true {
+	if l.AddWithTTL(1, 1, time.Millisecond*5) {
 		t.Errorf("should not have an eviction")
 	}
-	if l.AddWithTTL(2, 2, time.Millisecond*10) == true {
+	if l.AddWithTTL(2, 2, time.Millisecond*10) {
 		t.Errorf("should have an eviction")
 	}
 
