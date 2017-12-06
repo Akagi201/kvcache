@@ -37,13 +37,23 @@ func main() {
 
 	time.Sleep(2 * time.Second)
 	v, b = l.Get(1)
+	if l.AddWithTTL(1, 1, time.Second*5) {
+		fmt.Errorf("should not have an eviction\n")
+	}
+	fmt.Printf("v: %v, b: %v\n", v, b)
+
+	time.Sleep(2 * time.Second)
+	v, b = l.Get(1)
+	if l.AddWithTTL(1, 1, time.Second*5) {
+		fmt.Errorf("should not have an eviction\n")
+	}
 	fmt.Printf("v: %v, b: %v\n", v, b)
 
 	time.Sleep(2 * time.Second)
 	v, b = l.Get(1)
 	fmt.Printf("v: %v, b: %v\n", v, b)
 
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 	v, b = l.Get(1)
 	fmt.Printf("v: %v, b: %v\n", v, b)
 

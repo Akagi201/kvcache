@@ -12,7 +12,7 @@ import (
 // LruWithTTL lru with ttl
 type LruWithTTL struct {
 	*hlru.Cache
-	schedule      map[interface{}]bool
+	schedule      map[interface{}]*time.Timer
 	scheduleMutex sync.Mutex
 }
 
@@ -30,7 +30,7 @@ func NewTTLWithEvict(size int, onEvicted func(key interface{}, value interface{}
 	if err != nil {
 		return nil, err
 	}
-	return &LruWithTTL{c, make(map[interface{}]bool), sync.Mutex{}}, nil
+	return &LruWithTTL{c, make(map[interface{}]*time.Timer), sync.Mutex{}}, nil
 }
 
 func (lru *LruWithTTL) clearSchedule(key interface{}) {
@@ -43,16 +43,18 @@ func (lru *LruWithTTL) clearSchedule(key interface{}) {
 func (lru *LruWithTTL) AddWithTTL(key, value interface{}, ttl time.Duration) bool {
 	lru.scheduleMutex.Lock()
 	defer lru.scheduleMutex.Unlock()
-	if lru.schedule[key] {
+	if lru.schedule[key] != nil {
 		// already scheduled, nothing to do
+		lru.schedule[key].Reset(ttl)
 	} else {
-		lru.schedule[key] = true
+		lru.schedule[key] = time.NewTimer(ttl)
 		// Schedule cleanup
 		go func() {
-			defer lru.Cache.Remove(key)
-			defer lru.clearSchedule(key)
-			time.Sleep(ttl)
+			<-lru.schedule[key].C
+			lru.Cache.Remove(key)
+			lru.clearSchedule(key)
 		}()
 	}
+
 	return lru.Cache.Add(key, value)
 }
