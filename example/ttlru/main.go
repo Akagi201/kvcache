@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Akagi201/kvcache/lru"
+	"github.com/Akagi201/kvcache/ttlru"
 )
 
 func main() {

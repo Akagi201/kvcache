@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Akagi201/kvcache/lru"
+	"github.com/Akagi201/kvcache/ttlru"
 )
 
 // test that Add returns true/false if an eviction occurred
@@ -14,7 +14,7 @@ func TestLRUTTLAddNoTTL(t *testing.T) {
 		evictCounter += 1
 	}
 
-	l, err := lru.NewTTLWithEvict(1, onEvicted)
+	l, err := ttlru.NewTTLWithEvict(1, onEvicted)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -37,7 +37,7 @@ func TestLRUTTLAddWithTTL(t *testing.T) {
 		}
 	}
 
-	l, err := lru.NewTTLWithEvict(2, onEvicted)
+	l, err := ttlru.NewTTLWithEvict(2, onEvicted)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}

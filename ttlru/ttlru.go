@@ -1,4 +1,4 @@
-// Package lru lru with TTL
+// Package ttlru lru with TTL
 package lru
 
 import (

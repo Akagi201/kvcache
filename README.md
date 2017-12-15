@@ -6,4 +6,5 @@ A distributed in-memory key:val cache
 
 ## Import
 
-* `import "github.com/Akagi201/kvcache/lru"`
+* `import "github.com/Akagi201/kvcache/ttlru"` full version, implemented with goroutine.
+* `import "github.com/Akagi201/kvcache/lttlru"` light version, implemented without goroutine.
