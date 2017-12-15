@@ -1,4 +1,4 @@
-// Package ttlru lru with TTL, implemented with goroutine.
+// Package ttlru LRU with TTL, implemented with goroutine.
 package lru
 
 import (
