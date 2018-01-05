@@ -1,5 +1,5 @@
 // Package ttlru LRU with TTL, implemented with goroutine.
-package lru
+package ttlru
 
 import (
 	"errors"

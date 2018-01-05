@@ -1,4 +1,4 @@
-package lru_test
+package ttlru_test
 
 import (
 	"testing"
